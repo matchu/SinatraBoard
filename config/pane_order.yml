@@ -1,6 +1,7 @@
 - today
 - reddit
 - twitter
-- stack_overflow
+# StackOverflow pane was causing errors on Heroku, but not for me. Go figure.
+# - stack_overflow
 - github
 
