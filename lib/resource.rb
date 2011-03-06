@@ -6,13 +6,23 @@ class Resource
 
   def data
     unless @data
-      if query
-        @data = self.class.get(source, :query => query)
-      else
-        @data = self.class.get(source)
+      begin
+        if query
+          @data = self.class.get(source, :query => query)
+        else
+          @data = self.class.get(source)
+        end
+      rescue Crack::ParseError
+        raise ParseError, "Could not read #{source}"
+      end
+      unless @data.response.is_a? Net::HTTPOK
+        raise ConnectionError, "#{source} returned a #{@data.response.class}"
       end
       self.class.scope.each do |scope_level|
         @data = @data[scope_level]
+        unless @data
+          raise ParseError, "#{source} was not formatted as expected"
+        end
       end
       @data
     end
@@ -49,5 +59,9 @@ class Resource
       dynamic_field(:source, static_value, &block)
     end
   end
+
+  class ResourceError < StandardError;end
+  class ConnectionError < ResourceError;end
+  class ParseError < ResourceError;end
 end
 
