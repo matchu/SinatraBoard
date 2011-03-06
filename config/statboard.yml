@@ -1,0 +1,11 @@
+panes:
+  - today
+  - reddit
+  - twitter
+  # StackOverflow pane was causing errors on Heroku, but not for me. Go figure.
+  # - stack_overflow
+  - github
+  - lucky_number
+
+reload_every: 60
+

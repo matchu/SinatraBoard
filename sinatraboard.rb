@@ -35,13 +35,13 @@ PANE_CONFIGS = begin
 end
 
 # Now that they're loaded, let's get them ordered like we want 'em
-PANE_ORDER = YAML.load_file(ROOT.join('config', 'pane_order.yml'))
+STATBOARD_CONFIG = YAML.load_file(ROOT.join('config', 'statboard.yml'))
 ORDERED_PANE_TYPES = begin
   pane_types_by_name = {}
   Pane.all_types.each do |pane_type|
     pane_types_by_name[pane_type.underscore] = pane_type
   end
-  PANE_ORDER.map do |pane_name|
+  STATBOARD_CONFIG['panes'].map do |pane_name|
     pane_types_by_name[pane_name]
   end
 end
@@ -53,12 +53,23 @@ class Sinatraboard < Sinatra::Base
   set :public, ROOT.join('public')
 
   get '/' do
-    # Create a new instance of each pane, with the relevant config data
-    @panes = ORDERED_PANE_TYPES.map do |pane_type|
-      pane_type.new PANE_CONFIGS[pane_type.name]
-    end
-
     haml :statboard
+  end
+
+  get '/panes.json' do
+    content_type :json
+    panes.to_json
+  end
+
+  protected
+
+  def panes
+    # Create a new instance of each pane, with the relevant config data
+    {}.tap do |output|
+      ORDERED_PANE_TYPES.map do |pane_type|
+        output[pane_type.underscore] = pane_type.new PANE_CONFIGS[pane_type.name]
+      end
+    end
   end
 end
 

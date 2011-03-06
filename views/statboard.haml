@@ -5,17 +5,28 @@
     %link{:type => 'text/css', :rel => 'stylesheet', :href => '/reset.css'}
     %link{:type => 'text/css', :rel => 'stylesheet', :href => '/style.css'}
   %body
-  #wrapper
-    #data
-      %ul
-        - @panes.each do |pane|
-          %li.pane
-            %h2
-              - if pane.link
-                %a{:href => pane.link}= pane.title
-              - else
-                = pane.title
-            = stats_for(pane)
-  %footer#foot
-    %a{:href => 'https://github.com/matchu/SinatraBoard'} source
+    #wrapper
+      %ul#data
+        %li.pane#loading
+          %p Loading&hellip;
+    %footer#foot
+      %a{:href => 'https://github.com/matchu/SinatraBoard'} source
+    %script{:id => 'pane-template', :type => 'text/x-jquery-tmpl'}
+      %h2
+        {{if link}}
+        %a{:href => '${link}'} ${title}
+        {{else}}
+        ${title}
+        {{/if}}
+      %ul{:class => 'length-${stats.length}'}
+        {{each stats}}
+        %li
+          %h3 ${$value.value}
+          %span.whats ${$value.label}
+        {{/each}}
+    %script{:type => 'text/javascript'}
+      var STATBOARD_CONFIG = {reload_every: #{STATBOARD_CONFIG['reload_every']} };
+    %script{:type => 'text/javascript', :src => 'https://ajax.googleapis.com/ajax/libs/jquery/1.5.1/jquery.min.js'}
+    %script{:type => 'text/javascript', :src => 'http://ajax.microsoft.com/ajax/jquery.templates/beta1/jquery.tmpl.min.js'}
+    %script{:type => 'text/javascript', :src => '/statboard.js'}
 

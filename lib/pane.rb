@@ -1,3 +1,4 @@
+require 'json'
 require 'ostruct'
 
 require 'core_ext/class'
@@ -21,6 +22,14 @@ class Pane
       values[name] = self.instance_eval(&behavior)
     end
     values
+  end
+
+  def to_json(*args)
+    {
+      :title => title,
+      :link => link,
+      :stats => stats_array
+    }.to_json(*args)
   end
 
   class << self
@@ -85,6 +94,16 @@ class Pane
     def stat(name=nil, &block)
       raise ArgumentError, "Stat named #{name.inspect} already given" if stats[name]
       stats[name] = block
+    end
+  end
+
+  protected
+
+  def stats_array
+    [].tap do |output|
+      stats.each do |label, value|
+        output << {:label => label, :value => value}
+      end
     end
   end
 end
