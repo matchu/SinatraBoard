@@ -141,8 +141,10 @@ a:active {
 .weather h3 {
   color: #81ceff; }
 
-.error h3 {
+p.error {
   color: #fbc2c4;
+  margin: 1em auto 0;
+  width: 80%;
 }
 
 .whats {
