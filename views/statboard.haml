@@ -1,0 +1,10 @@
+%ul
+  - @panes.each do |pane|
+    %li
+      = pane.title
+      %ul
+        - pane.stats.each do |label, value|
+          %li
+            = value
+            = label
+
