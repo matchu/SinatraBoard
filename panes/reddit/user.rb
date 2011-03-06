@@ -1,30 +1,17 @@
-require 'rubygems'
-require 'httparty'
-
 class Reddit
-  class User
-    include HTTParty
+  class User < Resource
     format :json
     base_uri "www.reddit.com/user"
+
+    source { "/#{@name}/about.json" }
+    scope 'data'
+
+    attr_resource :comment_karma, :link_karma
 
     attr_reader :name
 
     def initialize(name)
       @name = name
-    end
-
-    def link_karma
-      data['link_karma']
-    end
-
-    def comment_karma
-      data['comment_karma']
-    end
-
-    protected
-
-    def data
-      @data ||= self.class.get("/#{@name}/about.json")['data']
     end
   end
 end

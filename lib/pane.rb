@@ -1,5 +1,8 @@
 require 'ostruct'
 
+require 'core_ext/class'
+require 'resource'
+
 class Pane
   attr_reader :config
 
@@ -65,16 +68,8 @@ class Pane
       all_types << pane
     end
 
-    # Define the title of a pane. The block is passed the config hash, and its
-    # return value is displayed as the title of the pane.
-    def title(static_value=nil)
-      if block_given?
-        define_method :title, Proc.new
-      elsif static_value
-        define_method(:title) { static_value }
-      else
-        raise ArgumentError, "#title must be passed either a static value or a block"
-      end
+    def title(static_value=nil, &block)
+      dynamic_field(:title, static_value, &block)
     end
 
     # Define a stat of a pane. The block is passed the config hash, and its
