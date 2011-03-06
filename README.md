@@ -13,35 +13,33 @@ StackOverflow reputation, etc., regularly reloading with the latest data.
 
 ## What's different about SinatraBoard?
 
-Well, for starters, this version doesn't regularly reload with the latest data.
-Since this was just a one-evening project, I opted to settle for simply
-rendering the HTML. If this were actually meant to turn into something, the
-code is organized in such a way that it wouldn't be a big deal to output the
-panes as JSON, instead, and have them load via AJAX.
-
-This version also supports links in the widget headers, and I happen to think
-that the pane API is much easier to use :) (Wrote up that Github followers
-pane, remote API call and all, in under 3 minutes. Boo ya.)
+This version supports links in the pane headers, transfers data as JSON instead
+of the rendered HTML (though I think the original project is changing its
+direction in that sense) and I happen to think that the pane API is much easier
+to use :) (Wrote up that Github followers pane, remote API call and all, in
+under 3 minutes. Boo ya.)
 
 ## How do I get this running?
 
 Well, if all you want to know how it looks, I have a version configured for me
-[running on Heroku][2]. If you'd like to run it yourself, pull the repository
-and run it as you'd run any other Rack-based app. For instance, you could use
+[running on Heroku][2]. If you'd like to run it yourself, pull the repository,
+then make sure you have all of the necessary gems.
+
+    cd /path/to/app
+    bundle install
+
+Then run it as you'd run any other Rack-based app. For instance, you could use
 the `thin` gem.
 
     cd /path/to/app
     thin start
 
-Also, don't forget to make sure you have all the gems specific to this
-application:
-
-    cd /path/to/app
-    bundle install
+There should be no further setup necessary to get the app running, especially
+since the automatic deploy to Heroku does almost exactly this.
 
 Once things are up and running, it's easy-peasy to go into `/config/panes` and
-change around the relevant usernames, and it's also easy to change
-`/config/pane_order.yml` as you'd expect.
+change around the relevant usernames, and it's also simple to change
+`/config/statboard.yml` to customize pane order and update interval.
 
 ## So, if I want to learn from this code, where should I look?
 
@@ -64,10 +62,10 @@ relatively simple. Tell me what you think.
 
 ## How can I create a pane?
 
-Glad you asked! The API is simple, and the examples in /panes really should be
+Glad you asked! The API is simple, and the examples in `/panes` really should be
 enough. But here goes:
 
-A pane class lives in /panes, and inherits from `Pane`. You may also create a
+A pane class lives in `/panes`, and inherits from `Pane`. You may also create a
 folder of the same name as your `.rb` file, the contents of which will be
 loaded after your main pane file.
 
@@ -87,6 +85,15 @@ Here are the class methods that `Pane` offers:
   (e.g. "followers"), and the block should return the value (e.g. 42). You may
   provide more that one statistic. The label may be omitted; however, at this
   time, you cannot provide more than one unlabeled statistic.
+
+The Lucky Number pane is about as simple as it gets:
+
+    class LuckyNumber < Pane
+      title "Lucky number"
+
+      stat { rand(100) }
+    end
+
 
 You'll also notice that some of the included examples use a custom `User` class
 that inherits from `Resource`. `Resource` is designed to make it easier to
@@ -116,7 +123,8 @@ in, so supports `format`, `base_uri`, etc., and also offers some shortcuts:
 `data` method, which takes care of a lot of the heavy lifting and error
 handling for you. If those three methods (and HTTParty's `format`, `base_uri`,
 etc.) are set correctly, `data` should return *exactly* the data you're
-interested in.
+interested in, without you having to muck around with sending the HTTP
+requests, handling 404s, etc.
 
 Of course, it's best to learn by example. `/panes/today.rb` is a very simple
 example, and `/panes/reddit.rb` is only slightly more complicated, but
