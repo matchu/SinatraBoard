@@ -2,6 +2,7 @@
 
 require 'pathname'
 ROOT = Pathname.new(File.expand_path('..', __FILE__))
+$:.unshift ROOT.to_s
 $:.unshift ROOT.join('lib').to_s
 
 # Stdlib requirements
@@ -34,6 +35,8 @@ CONFIGS = begin
 end
 
 ## Respond to HTTP requests ##
+
+require 'helpers'
 
 get '/' do
   # Create a new instance of each pane, with the relevant config data

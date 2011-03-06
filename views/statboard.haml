@@ -1,10 +1,11 @@
-%ul
-  - @panes.each do |pane|
-    %li
-      = pane.title
-      %ul
-        - pane.stats.each do |label, value|
-          %li
-            = value
-            = label
+!!!
+%html
+  %head
+    %title Sinatraboard
+  %body
+  %ul
+    - @panes.each do |pane|
+      %li
+        = pane.title
+        = stats_for(pane)
 
