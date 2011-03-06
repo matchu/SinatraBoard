@@ -90,6 +90,10 @@ a:active {
     background-color: rgba(255,255,255,0.025); }
   .pane h2 {
     font-size: 24px; }
+    .pane h2 a {
+      color: #aaa; }
+    .pane h2 a:hover {
+      color: white; }
   .pane h3, .pane h4 {
     display: inline; }
 

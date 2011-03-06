@@ -10,6 +10,10 @@
       %ul
         - @panes.each do |pane|
           %li.pane
-            %h2= pane.title
+            %h2
+              - if pane.link
+                %a{:href => pane.link}= pane.title
+              - else
+                = pane.title
             = stats_for(pane)
 

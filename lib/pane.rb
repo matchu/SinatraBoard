@@ -10,6 +10,10 @@ class Pane
     @config = OpenStruct.new config
   end
 
+  def link
+    nil
+  end
+
   # Runs each stat and returns them as a hash
   def stats
     values = {}
@@ -66,6 +70,10 @@ class Pane
 
     def inherited(pane) # :nodoc:
       all_types << pane
+    end
+
+    def link(static_value=nil, &block)
+      dynamic_field(:link, static_value, &block)
     end
 
     def title(static_value=nil, &block)

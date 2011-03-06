@@ -6,6 +6,8 @@ class Reddit < Pane
 
   title { "#{user.name} on Reddit" }
 
+  link { "http://www.reddit.com/user/#{user.name}" }
+
   stat("link karma") { user.link_karma }
   stat("comment karma") { user.comment_karma }
 
