@@ -1,7 +1,7 @@
 class Reddit
   class User < Resource
     format :json                       # It's a JSON resource
-    base_uri "www.reddit.com/users"    # that lives in www.reddit.com/users,
+    base_uri "www.reddit.com/user"    # that lives in www.reddit.com/users,
     source { "/#{@name}/about.json" }  # specifically, at /[name]/about.json,
     scope 'data'                       # and the data we're interested in is
                                        # all under the 'data' key
