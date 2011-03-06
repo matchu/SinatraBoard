@@ -11,7 +11,7 @@ require 'yaml'
 # Rubygem requirements
 require 'rubygems'
 require 'haml'
-require 'sinatra'
+require 'sinatra/base'
 
 # Local lib requirements
 require 'pane'
@@ -47,15 +47,18 @@ ORDERED_PANE_TYPES = begin
 end
 
 ## Respond to HTTP requests ##
+class Sinatraboard < Sinatra::Base
+  require 'helpers'
 
-require 'helpers'
+  set :public, ROOT.join('public')
 
-get '/' do
-  # Create a new instance of each pane, with the relevant config data
-  @panes = ORDERED_PANE_TYPES.map do |pane_type|
-    pane_type.new PANE_CONFIGS[pane_type.name]
+  get '/' do
+    # Create a new instance of each pane, with the relevant config data
+    @panes = ORDERED_PANE_TYPES.map do |pane_type|
+      pane_type.new PANE_CONFIGS[pane_type.name]
+    end
+
+    haml :statboard
   end
-
-  haml :statboard
 end
 
