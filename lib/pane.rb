@@ -59,7 +59,7 @@ class Pane
 
     # Returns the CamelCased class name as an underscored_string
     def underscore
-      name.gsub(/([A-Z]+)([A-Z][a-z])/,'\1_\2').downcase
+      @underscore ||= name.gsub(/([A-Z]+)([A-Z][a-z])/,'\1_\2').downcase
     end
 
     protected
