@@ -1,8 +1,9 @@
 require 'date'
 class Today < Pane
-  FORMAT = "%m/%d"
-
   title "Today"
-  stat { Date.today.strftime(FORMAT) }
+  stat do
+    date = Date.today
+    "#{date.month}/#{date.day}"
+  end
 end
 
