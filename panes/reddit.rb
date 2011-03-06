@@ -1,4 +1,9 @@
 class Reddit < Pane
+  # Here, we set the behavior for title and stats using Pane's class methods
+  # #title and #stat. The expression in the block will be reevaluated on each
+  # page load, within the context of this Reddit object. (That's why they can
+  # call #user.)
+
   title { "#{user.name} on Reddit" }
 
   stat("link karma") { user.link_karma }
