@@ -12,8 +12,8 @@ class Resource
         else
           @data = self.class.get(source)
         end
-      rescue Crack::ParseError
-        raise ParseError, "Could not read #{source}"
+      rescue Crack::ParseError => e
+        raise ParseError, "Could not read #{source}: #{e.message}"
       end
       unless @data.response.is_a? Net::HTTPOK
         raise ConnectionError, "#{source} returned a #{@data.response.class}"
