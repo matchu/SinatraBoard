@@ -1,6 +1,11 @@
 %ul
-  - stats.each do |label, value|
+  - if stats.size == 1
     %li
-      = value
-      = label
+      %h3= stats.values[0]
+      %span.whats= stats.keys[0]
+  - else
+    - stats.each do |label, value|
+      %li
+        %h4= value
+        %span.whats= label
 

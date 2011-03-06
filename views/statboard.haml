@@ -2,10 +2,14 @@
 %html
   %head
     %title Sinatraboard
+    %link{:type => 'text/css', :rel => 'stylesheet', :href => '/reset.css'}
+    %link{:type => 'text/css', :rel => 'stylesheet', :href => '/style.css'}
   %body
-  %ul
-    - @panes.each do |pane|
-      %li
-        = pane.title
-        = stats_for(pane)
+  #wrapper
+    #data
+      %ul
+        - @panes.each do |pane|
+          %li.pane
+            %h2= pane.title
+            = stats_for(pane)
 
